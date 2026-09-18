@@ -1,7 +1,7 @@
 ---
 name: market-research
 description: Finds $1M+ runners and reverse-engineers what they built.
-version: 2.0.0
+version: 2.1.0
 author: depi (BUILDPROJECT222)
 license: MIT
 platforms: [linux, macos, windows]
@@ -75,8 +75,21 @@ finding. Three traps, all observed live:
 - A launchpad's URL is not the coin's product. Several coins launched on one platform all list
   that platform's site; study the platform once, not once per coin.
 
+Two more traps only show themselves after the page is opened, so a 200 OK is never the test:
+- **Recycled/parked domains.** One runner's site was a years-old Japanese satellite-TV affiliate
+  blog, live and updating, with no link to the token. Check that the page mentions the coin.
+- **Cloaked redirects.** One was 658 bytes of user-agent sniffing that sent mobile visitors to a
+  launchpad listing and desktop visitors elsewhere. Fetch the body, not just the status.
+- **Somebody else's app.** A site can be a real, large product owned by a third party (one pointed
+  at a social trading app with 2.5M users). Same class as the launchpad trap — drop the coin,
+  credit the platform.
+
 **4. Open what is left.** For each surviving runner use `web_extract`, and `browser_navigate`
-when the page needs JS. Answer four questions, and answer them from the site, not from the name:
+when the page needs JS. When `web_extract` returns 403 and no browser backend is installed, fall
+back to `curl -sL -A '<desktop Chrome UA>'` and strip the tags — that recovered 7 of 7 blocked
+sites in one run. Only a JS-only app resists all three; mark that one partially unread and say
+which claim you did not verify. Answer four questions, and answer them from the site, not from the
+name:
 - **What does it do?** In one sentence a stranger understands.
 - **What is the token for?** Access, fee share, governance, scoreboard, or nothing at all.
   "Nothing at all" is a frequent and honest answer — write it.
