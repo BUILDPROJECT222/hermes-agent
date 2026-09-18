@@ -6,7 +6,7 @@ Alurnya meniru cara 6 repo sebelumnya dikerjakan: riset narasi → brand → kon
 | Agen | Skill | Tugas | Baca | Tulis |
 |---|---|---|---|---|
 | Orkestrator | `launch-crew` | jalankan 4 agen berurutan, pegang gate | — | ringkasan |
-| 1. Riset | `market-research` | sapu GMGN 7 chain, namai narasi, cari celah | feed GMGN | `RESEARCH.md` |
+| 1. Riset | `market-research` | cari runner >$1jt, bedah produk yang mereka bangun | GMGN + situs runner | `RESEARCH.md` |
 | 2. Desain | `brand-design` | palet, tipografi, logo, avatar, banner | `RESEARCH.md` | `brand/` |
 | 3. Konten | `content-studio` | copy situs, thread launching, kit post X | `RESEARCH.md`, `brand/` | `content/`, `brand/x-posts/` |
 | 4. Teknik | `web-engineering` | server, sync feed, front end, deploy | semuanya | `server/`, `src/`, `data/` |
