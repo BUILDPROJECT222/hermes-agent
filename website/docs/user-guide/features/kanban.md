@@ -500,6 +500,8 @@ Every profile that works kanban tasks automatically gets the worker lifecycle �
 3. Call `kanban_heartbeat(note="...")` every few minutes during long operations. **If your work may run longer than 1 hour, call `kanban_heartbeat` at least once an hour** — the dispatcher reclaims tasks that have been running past `kanban.dispatch_stale_timeout_seconds` (default 4 h) with no heartbeat in the last hour, on the assumption the worker crashed without cleanup. A reclaim is benign (the task goes back to `ready` for re-dispatch without a failure-counter tick) but you lose your current run's progress.
 4. Complete with `kanban_complete(summary="...", metadata={...})`, or `kanban_block(reason="...")` if stuck.
 
+Normal tool activity also extends the claim automatically (the worker mirrors its in-process liveness onto the board about once a minute). That bridge only works for a process the dispatcher spawned itself: a process that carries `HERMES_DELEGATED_CHILD_CONTEXT` next to `HERMES_KANBAN_TASK` (a `delegate_task` descendant, or a hand-launched copy of a worker's environment) is fenced from the board — its auto-heartbeat logs one `kanban auto-heartbeat for task … refused` warning and `kanban_complete` / `kanban_request_review` refuse. Fix the launch (let the dispatcher spawn the worker) rather than exporting the marker away.
+
 That final `kanban_complete` / `kanban_block` call is part of the worker
 protocol. If the worker process exits with status 0 while the task is still
 `running`, the dispatcher treats that as a protocol violation and emits a
